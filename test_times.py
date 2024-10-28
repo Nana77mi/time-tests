@@ -1,5 +1,8 @@
+from pyarrow import nulls
+
 import times
 
+# 12
 def test_given_input():
     large = times.time_range("2010-01-12 10:00:00", "2010-01-12 12:00:00")
     short = times.time_range("2010-01-12 10:30:00", "2010-01-12 10:45:00", 2, 60)
@@ -34,6 +37,7 @@ def test_given_input_end_equal_start():
     expected = [('2010-01-12 12:00:00', '2010-01-12 12:00:00')]
     assert result == expected
 
+# bug fixed
 def test_given_input1():
     large = times.time_range("2010-01-12 10:00:00", "2010-01-12 12:00:00")
     short = times.time_range("2010-01-12 10:30:00", "2010-01-12 10:45:00", 2, 60)
@@ -64,3 +68,13 @@ def test_given_input_end_equal_start1():
     result = times.compute_overlap_time_fixed(large, short)
     expected = [('2010-01-12 12:00:00', '2010-01-12 12:00:00')]
     assert result == expected
+
+def test_time_range_start_after_end():
+    flag = True
+    test_time = None
+    try:
+        large = times.time_range_fixed("2010-01-12 10:00:00", "2010-01-12 08:00:00")
+    except ValueError:
+        print(ValueError)
+        flag = False
+    assert flag
