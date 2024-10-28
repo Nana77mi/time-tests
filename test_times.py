@@ -1,5 +1,5 @@
-from pyarrow import nulls
 
+import pytest
 import times
 
 # 12
@@ -71,9 +71,10 @@ def test_given_input_end_equal_start1():
 
 def test_time_range_start_after_end():
     flag = True
-    test_time = None
+    test_time = ("2010-01-12 10:00:00", "2010-01-12 08:00:00")
+    pytest.raises(ValueError, times.time_range, test_time, flag)
     try:
-        large = times.time_range_fixed("2010-01-12 10:00:00", "2010-01-12 08:00:00")
+        test_time = times.time_range_fixed("2010-01-12 10:00:00", "2010-01-12 08:00:00")
     except ValueError:
         print(ValueError)
         flag = False
